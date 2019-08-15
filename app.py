@@ -26,7 +26,7 @@ from werkzeug.wsgi import DispatcherMiddleware
 from werkzeug.serving import run_simple
 import pygal
 
-# plotly.tools.set_credentials_file(username='mtfaye', api_key='N9PkbhoY5zxhbU3LKqtb'
+# plotly.tools.set_credentials_file(username='mtfaye', api_key='###########')
 
 #API ACCESS
 

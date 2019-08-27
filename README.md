@@ -1,2 +1,3 @@
-# maa-dash
-Music analytic app built with dash and powered by Spotify API
+# hit-dash
+Analytical music application, built with Dash and powered by the Spotify web api. 
+

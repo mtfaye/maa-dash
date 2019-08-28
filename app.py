@@ -21,11 +21,8 @@ from dash.dependencies import Input, Output, State
 import dash_daq as daq
 import plotly.plotly as py
 from flask import Flask, request, redirect, render_template, session, abort, url_for, json, make_response
-from werkzeug.wsgi import DispatcherMiddleware
-from werkzeug.serving import run_simple
-import pygal
 
-# plotly.tools.set_credentials_file(username='mtfaye', api_key='N9PkbhoY5zxhbU3LKqtb'
+
 
 # API ACCESS
 

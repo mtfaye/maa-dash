@@ -21,8 +21,11 @@ from dash.dependencies import Input, Output, State
 import dash_daq as daq
 import plotly.plotly as py
 from flask import Flask, request, redirect, render_template, session, abort, url_for, json, make_response
+from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.serving import run_simple
+import pygal
 
-
+# plotly.tools.set_credentials_file(username='mtfaye', api_key='N9PkbhoY5zxhbU3LKqtb'
 
 # API ACCESS
 
@@ -137,7 +140,8 @@ app.layout = html.Div(
                     [
                         html.H1(children='hit-dash',
                                 style={'color': 'white', 'fontSize':23, 'text-indent':10,'line-height': 50},
-                                className='banner'),
+                                className='banner'
+                                ),
 
                         html.Div(children='''
                                              Plot your artist
@@ -147,8 +151,8 @@ app.layout = html.Div(
                     ], className="row"
                 ),
             html.Div([
-                html.Div(
-                    [
+                html.Div([
+
                         dcc.Input(id='input', value='', type='text',
                                   style={'display': 'inline-block', 'width': '30%'},
                                   placeholder=' Enter artist name'
@@ -156,6 +160,23 @@ app.layout = html.Div(
                         html.Div(id='output_div'
                                  )
                     ], className="row"
+                ),
+                html.Div([
+                    html.P('Choose features'),
+                    dcc.Dropdown(
+                        id='dropdown',
+                        options=[{'label': 'Acousticness', 'value': 'ACO'},
+                                 {'label': 'Energy', 'value': 'ENE'},
+                                 {'label': 'Tempo', 'value': 'TEM'}],
+                        value=[],
+                        multi=True
+                    )],className='row'),
+                html.Div(
+                    [
+                        dcc.Graph(
+                            id='feat-graph'
+                        )
+                    ],className='twelve columns'
                 ),
 
                 html.Div(
@@ -220,6 +241,7 @@ def update_fig(input_data):
     # Lets concat df_results and df_features
     df_results.reset_index(drop=True, inplace=True)
     df_features.reset_index(drop=True, inplace=True)
+    global df
 
 
     df = pd.concat([df_results, df_features], axis=1)
@@ -255,11 +277,11 @@ def update_fig(input_data):
           html.Div([
               html.Div(
 
-                  [
+                  [html.P('List of analysed tracks'),
                       html.Div(
                           html.Table(
                               [html.Tr([
-                                  html.Th('List of analysed tracks')
+                                  html.Th()
                               ])] +
                               # Body
                               [
@@ -310,27 +332,34 @@ def update_fig(input_data):
 
                       ],className='six columns')
 
-          ],className='twelve columns'),
-        html.Div([
-            dcc.Graph(
-                id='features-graph',
-                figure={
-                    'data': [{'y': df['acousticness'], 'type': 'scatter', 'name': 'Acousticness', 'mode':'lines',
-                              'color':'firebrick'},
-                             {'y': df['instrumentalness'], 'type': 'scatter', 'name': 'Instrumentalness', 'mode':'lines+markers',
-                              'color': 'firebrick'},
-                             {'y': df['energy'], 'type': 'scatter', 'name': 'Energy', 'mode':'markers',
-                              'color': 'firebrick'}
-                             ],
-                    'layout': {
-                        'title': 'Tracks features'
-                    }
+          ],className='twelve columns')
 
-                }, style={"height": "10", "width": "500"}
-            )
-
-        ], className='ten columns')
     ]
+
+@app.callback(Output('feat-graph','figure'),
+              [Input('dropdown','value')])
+def update_graph(selector):
+    data = [{'y': df['acousticness'], 'type': 'scatter', 'name': 'Acousticness', 'mode':'lines',
+                              'color':'firebrick'},
+            {'y': df['instrumentalness'], 'type': 'scatter', 'name': 'Instrumentalness', 'mode':'lines+markers',
+                              'color': 'firebrick'},
+            {'y': df['energy'], 'type': 'scatter', 'name': 'Energy', 'mode':'markers',
+                              'color': 'firebrick'}
+                             ]
+    for item in selector:
+        for i in item:
+            data.append(item[i])
+
+        figure={'data': data,
+                'layout': {
+                       'title': 'Tracks features'
+                    }
+                }
+        return figure
+
+
+
+
 
 
 if __name__ == '__main__':

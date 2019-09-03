@@ -18,8 +18,6 @@ from dash.dependencies import Input, Output
 import dash_daq as daq
 import plotly.graph_objs as go
 
-# plotly.tools.set_credentials_file(username='mtfaye', api_key='##############'
-
 # API ACCESS
 
 # Get the username from terminal
@@ -38,10 +36,10 @@ except (AttributeError, JSONDecodeError):
 spotifyObject = spotipy.Spotify(auth=token)
 
 
+# CREATE DASH APP
 app = dash.Dash(__name__)
 app.config['suppress_callback_exceptions'] = True
 app.title = 'hit-dash'
-app.colors = {'background': '#5F5958'}
 
 
 # Boostrap CSS

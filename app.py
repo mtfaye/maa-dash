@@ -4,26 +4,19 @@ import os
 import sys
 import json
 import spotipy
-import webbrowser
 import spotipy.util as util
 from json.decoder import JSONDecodeError
-import time
 import pandas as pd
 import sqlite3
-import numpy as np
 from statistics import mean
 
 import dash
 import dash_table
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import dash_daq as daq
-import plotly.plotly as py
-from flask import Flask, request, redirect, render_template, session, abort, url_for, json, make_response
-from werkzeug.wsgi import DispatcherMiddleware
-from werkzeug.serving import run_simple
-import pygal
+import plotly.graph_objs as go
 
 # plotly.tools.set_credentials_file(username='mtfaye', api_key='N9PkbhoY5zxhbU3LKqtb'
 
@@ -114,6 +107,7 @@ trace1 = {
   "hoverinfo": "text+name",
   "showlegend": True
 }
+
 trace2 = {
   "hole": 0.5,
   "type": "pie",
@@ -162,14 +156,17 @@ app.layout = html.Div(
                     ], className="row"
                 ),
                 html.Div([
-                    html.P('Choose features'),
+
                     dcc.Dropdown(
                         id='dropdown',
-                        options=[{'label': 'Acousticness', 'value': 'ACO'},
-                                 {'label': 'Energy', 'value': 'ENE'},
-                                 {'label': 'Tempo', 'value': 'TEM'}],
-                        value=[],
-                        multi=True
+                        options=[{'label': 'Acousticness', 'value': 'Acousticness'},
+                                 {'label': 'Liveness', 'value': 'Liveness'},
+                                 {'label': 'Energy', 'value': 'Energy'},
+                                 {'label': 'Valence', 'value': 'Valence'}
+                                 ],
+                        value='All',
+                        multi=True,
+                        placeholder='Choose a feature'
                     )],className='row'),
                 html.Div(
                     [
@@ -214,10 +211,10 @@ app.layout = html.Div(
 @app.callback(Output('output_div','children'),
               [Input('input', 'value')])
 
-def update_fig(input_data):
+def update_div(input_data):
     # Get list of tracks for a given artist
     results = spotifyObject.search(input_data,limit=30)
-    print(json.dumps(results, indent=4))
+    # print(json.dumps(results, indent=4))
 
     # Get the list of tracks name
     tids = []
@@ -232,8 +229,8 @@ def update_fig(input_data):
     # Get features
     features = spotifyObject.audio_features(tids)
 
-    # for feature in features:
-    #     print(json.dumps(feature, indent=4))
+    for feature in features:
+        print(json.dumps(feature, indent=4))
     #  Create DataFrame for features
     df_features = pd.DataFrame(features)
 
@@ -253,7 +250,7 @@ def update_fig(input_data):
         'preview_url', 'type', 'external_ids', 'external_urls', 'id', 'track_href'
     ], axis=1)
 
-    print(df.dtypes)
+    # print(df.dtypes)
 
     connex = sqlite3.connect('spotify-data.db')
     # cur = connex.cursor()
@@ -268,12 +265,6 @@ def update_fig(input_data):
 
 
     return[
-        html.Div([
-            html.H5(
-                u"{}".format(input_data),
-                style={'fontSize': 20, 'font-weight':'bold', 'text-indent':10, 'text-align':'center'}
-            )
-        ], className='twelve columns'),
           html.Div([
               html.Div(
 
@@ -304,7 +295,10 @@ def update_fig(input_data):
 
                   ], className='four columns'),
 
-                      html.Div([
+                      html.Div([html.P(html.H5(u"{}".format(input_data),
+                                               style={'fontSize': 20, 'font-weight':'bold', 'text-indent':10,
+                                                      'text-align':'center'}
+            )),
                           html.Div([
                               daq.Gauge(
                                   id='popularity-graph',
@@ -338,26 +332,43 @@ def update_fig(input_data):
 
 @app.callback(Output('feat-graph','figure'),
               [Input('dropdown','value')])
+
 def update_graph(selector):
-    data = [{'y': df['acousticness'], 'type': 'scatter', 'name': 'Acousticness', 'mode':'lines',
-                              'color':'firebrick'},
-            {'y': df['instrumentalness'], 'type': 'scatter', 'name': 'Instrumentalness', 'mode':'lines+markers',
-                              'color': 'firebrick'},
-            {'y': df['energy'], 'type': 'scatter', 'name': 'Energy', 'mode':'markers',
-                              'color': 'firebrick'}
-                             ]
-    for item in selector:
-        for i in item:
-            data.append(item[i])
 
-        figure={'data': data,
-                'layout': {
-                       'title': 'Tracks features'
-                    }
-                }
-        return figure
+    options_data={
+        'Acousticness': df.acousticness,
+        'Liveness': df.liveness,
+        'Energy': df.energy,
+        'Valence':df.valence
+    }
 
+    data=[]
+    for i in selector:
+        data.append({
+            'y': options_data[i], 'type':'Scatter'
+        })
 
+    figure={
+        'data':data,
+        'layout': {
+            'title': 'Tracks Features',
+            'xaxis' : dict(
+                title='Tracks',
+                titlefont=dict(
+                family='Courier New, monospace',
+                size=20,
+                color='#7f7f7f'
+            )),
+            'yaxis' : dict(
+                title='Values',
+                titlefont=dict(
+                family='Helvetica, monospace',
+                size=20,
+                color='#7f7f7f'
+            ))
+        }
+    }
+    return figure
 
 
 

@@ -1,3 +1,7 @@
+'''
+@author: Mouhameth Takha Faye
+                              '''
+
 from __future__ import print_function    # (at top of module)
 from spotipy.oauth2 import SpotifyClientCredentials
 import os

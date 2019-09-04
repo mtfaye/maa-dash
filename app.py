@@ -3,20 +3,20 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import sys
 import json
-import spotipy
-import spotipy.util as util
-from json.decoder import JSONDecodeError
-import pandas as pd
 import sqlite3
+import spotipy
+import pandas as pd
+import spotipy.util as util
 from statistics import mean
+from json.decoder import JSONDecodeError
 
 import dash
 import dash_table
+import dash_daq as daq
+import plotly.graph_objs as go
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import dash_daq as daq
-import plotly.graph_objs as go
 
 # API ACCESS
 

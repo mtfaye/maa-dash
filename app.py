@@ -49,7 +49,7 @@ app.title = 'hit-dash'
 # Boostrap CSS
 app.css.append_css({'external_url': 'https://codepen.io/mtfaye/pen/MWgpoyp.css'})
 
-
+# DASH LAYOUT
 app.layout = html.Div(
     [
         html.Div(
@@ -130,12 +130,13 @@ app.layout = html.Div(
     ], className='ten columns offset-by-one'
 )
 
-
+# CALLBACKS
 
 @app.callback(Output('output_div','children'),
               [Input('input', 'value')])
 
 def update_div(input_data):
+  
     # Get list of tracks for a given artist
     results = spotifyObject.search(input_data,limit=30)
     # print(json.dumps(results, indent=4))

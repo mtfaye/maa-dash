@@ -11,7 +11,7 @@ Analytical music application, built with Dash and powered by the Spotify web api
 
 
 
-# Running the app:
+## Running the app:
 
 . Clone the repo
 . Install requirements by using pip install -r requirements.txt.
@@ -30,4 +30,4 @@ Analytical music application, built with Dash and powered by the Spotify web api
  
 
 
-# Enjoy!
+## Enjoy!

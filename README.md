@@ -1,7 +1,6 @@
 # maa-dash
 Analytical music application, built using the analytic web app framework, Dash and powered by the Spotify web api.
-
-![](ezgif.com-video-to-gif.gif)
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/39230255/64483326-ddba8480-d1cd-11e9-9cc8-81f793c359a1.gif)
 
 ## Repo contents:
 

@@ -47,53 +47,6 @@ app.colors = {'background': '#5F5958'}
 # Boostrap CSS
 app.css.append_css({'external_url': 'https://codepen.io/mtfaye/pen/MWgpoyp.css'})
 
-# Layouts
-layout_table = dict(
-    autosize=True,
-    height=500,
-    font=dict(color="#191A1A"),
-    titlefont=dict(color="#191A1A", size='14'),
-    margin=dict(
-        l=35,
-        r=35,
-        b=35,
-        t=45
-    ),
-    hovermode="closest",
-    plot_bgcolor='#fffcfc',
-    paper_bgcolor='#fffcfc',
-    legend=dict(font=dict(size=10), orientation='h'),
-)
-layout_table['font-size'] = '12'
-layout_table['margin-top'] = '20'
-
-layout_gauge = {
-  "title": "Popularity",
-  "width": 500,
-  "xaxis": {
-    "range": [-1, 1],
-    "showgrid": False,
-    "zeroline": False,
-    "showticklabels": False
-  },
-  "yaxis": {
-    "range": [-1, 1],
-    "showgrid": False,
-    "zeroline": False,
-    "showticklabels": False
-  },
-  "height": 500,
-  "shapes": [
-    {
-      "line": {"color": "850000"},
-      "path": "M -.0 -0.025 L .0 0.025 L -1.0 1.22464679915e-16 Z",
-      "type": "path",
-      "fillcolor": "850000"
-    }
-  ]
-}
-
-
 app.layout = html.Div(
     [
         html.Div(

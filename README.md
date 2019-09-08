@@ -15,7 +15,7 @@ Analytical music application, built with Dash and powered by the Spotify web api
 
 - Clone the repo
 - Install requirements by using pip install -r requirements.txt.
-- Sign up on Spotify for free if you do not have an account already and go to https://developer.spotify.com/dashboard/login to get fill in the form and get your spotify app credentials.
+- Sign up on Spotify for free if you do not have an account already and go to https://developer.spotify.com/dashboard/login, fill in the form and get your spotify app credentials.
 
 - Use the wrapper Spotipy to set up your terminal variables:
             export SPOTIPY_CLIENT_ID='your-spotify-client-id'
@@ -28,6 +28,7 @@ Analytical music application, built with Dash and powered by the Spotify web api
 - Run on a local server
 
  
-
+## Credits
+A big shoutout to all the open sources codes or tools like Dash and Spotipy that made this project very easier for me.
 
 ## Enjoy!

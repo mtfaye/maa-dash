@@ -1,5 +1,5 @@
 # maa-dash
-Analytical music application, built with Dash and powered by the Spotify web api.
+Analytical music application, built using the analytic web app framework, Dash and powered by the Spotify web api.
 
 ## Repo contents:
 

@@ -1,6 +1,8 @@
 # maa-dash
 Analytical music application, built using the analytic web app framework, Dash and powered by the Spotify web api.
 
+![](ezgif.com-video-to-gif.gif)
+
 ## Repo contents:
 
 - app.py : This is the main front-end and back-end application code. Contains the dash application layouts, graphs coding, callbacks for interactivities of the app, interfaces with the database...

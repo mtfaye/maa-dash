@@ -1,26 +1,24 @@
-'''
-@author: Mouhameth Takha Faye
-                              '''
-
 from __future__ import print_function    # (at top of module)
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import sys
 import json
-import sqlite3
 import spotipy
-import pandas as pd
 import spotipy.util as util
-from statistics import mean
 from json.decoder import JSONDecodeError
+import pandas as pd
+import sqlite3
+from statistics import mean
 
 import dash
 import dash_table
-import dash_daq as daq
-import plotly.graph_objs as go
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import dash_daq as daq
+import plotly.graph_objs as go
+
+# plotly.tools.set_credentials_file(username='mtfaye', api_key='N9PkbhoY5zxhbU3LKqtb'
 
 # API ACCESS
 
@@ -40,16 +38,62 @@ except (AttributeError, JSONDecodeError):
 spotifyObject = spotipy.Spotify(auth=token)
 
 
-# CREATE DASH APP
 app = dash.Dash(__name__)
 app.config['suppress_callback_exceptions'] = True
 app.title = 'hit-dash'
+app.colors = {'background': '#5F5958'}
 
 
 # Boostrap CSS
 app.css.append_css({'external_url': 'https://codepen.io/mtfaye/pen/MWgpoyp.css'})
 
-# DASH LAYOUT
+# Layouts
+layout_table = dict(
+    autosize=True,
+    height=500,
+    font=dict(color="#191A1A"),
+    titlefont=dict(color="#191A1A", size='14'),
+    margin=dict(
+        l=35,
+        r=35,
+        b=35,
+        t=45
+    ),
+    hovermode="closest",
+    plot_bgcolor='#fffcfc',
+    paper_bgcolor='#fffcfc',
+    legend=dict(font=dict(size=10), orientation='h'),
+)
+layout_table['font-size'] = '12'
+layout_table['margin-top'] = '20'
+
+layout_gauge = {
+  "title": "Popularity",
+  "width": 500,
+  "xaxis": {
+    "range": [-1, 1],
+    "showgrid": False,
+    "zeroline": False,
+    "showticklabels": False
+  },
+  "yaxis": {
+    "range": [-1, 1],
+    "showgrid": False,
+    "zeroline": False,
+    "showticklabels": False
+  },
+  "height": 500,
+  "shapes": [
+    {
+      "line": {"color": "850000"},
+      "path": "M -.0 -0.025 L .0 0.025 L -1.0 1.22464679915e-16 Z",
+      "type": "path",
+      "fillcolor": "850000"
+    }
+  ]
+}
+
+
 app.layout = html.Div(
     [
         html.Div(
@@ -91,13 +135,13 @@ app.layout = html.Div(
                         value='All',
                         multi=True,
                         placeholder='Choose a feature'
-                    )],className='row'),
+                    )],className='six columns'),
                 html.Div(
                     [
                         dcc.Graph(
                             id='feat-graph'
                         )
-                    ],className='twelve columns'
+                    ],className='nine columns'
                 ),
 
                 html.Div(
@@ -130,13 +174,12 @@ app.layout = html.Div(
     ], className='ten columns offset-by-one'
 )
 
-# CALLBACKS
+
 
 @app.callback(Output('output_div','children'),
               [Input('input', 'value')])
 
 def update_div(input_data):
-  
     # Get list of tracks for a given artist
     results = spotifyObject.search(input_data,limit=30)
     # print(json.dumps(results, indent=4))
@@ -264,35 +307,24 @@ def update_graph(selector):
         'Acousticness': df.acousticness,
         'Liveness': df.liveness,
         'Energy': df.energy,
-        'Valence':df.valence
+        'Valence':df.valence,
+
     }
 
     data=[]
     for i in selector:
         data.append({
-            'y': options_data[i], 'type':'Scatter'
-        })
+            'y': options_data[i], 'type': 'Scatter', 'mode': 'lines+markers'
+            })
 
-    figure={
-        'data':data,
-        'layout': {
-            'title': 'Tracks Features',
-            'xaxis' : dict(
-                title='Tracks',
-                titlefont=dict(
-                family='Courier New, monospace',
-                size=20,
-                color='#7f7f7f'
-            )),
-            'yaxis' : dict(
-                title='Values',
-                titlefont=dict(
-                family='Helvetica, monospace',
-                size=20,
-                color='#7f7f7f'
-            ))
+    figure= {
+            'data': data,
+            'layout':
+                {
+                    'title':'Tracks Features'
+
+                }
         }
-    }
     return figure
 
 

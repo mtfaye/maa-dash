@@ -29,6 +29,6 @@ Analytical music application, built with Dash and powered by the Spotify web api
 
  
 ## Credits
-A big shoutout to all the open sources codes or tools like Dash and Spotipy that made this project very easier for me.
+A big shoutout to all the open source codes like Dash and Spotipy that made this app easier for me to develop.
 
 ## Enjoy!

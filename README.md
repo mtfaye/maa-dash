@@ -4,7 +4,7 @@ Analytical music application, built with Dash and powered by the Spotify web api
 ## Repo contents:
 . app.py : This is the main front-end and back-end application code. Contains the dash application layouts, graphs coding, callbacks for interactivities of the app, interfaces with the database...
 
-. requirement.txt:  Contains all the dependencies. 
+. requirement.txt: Contains all the dependencies. 
 . assets: contains all the statics images and CSS Boostrap codes.
 
 . spotify.data.db: sqlite database, no need to use this file. You can create the file in your directory by simply running the app.py

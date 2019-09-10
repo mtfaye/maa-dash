@@ -18,7 +18,6 @@ from dash.dependencies import Input, Output
 import dash_daq as daq
 import plotly.graph_objs as go
 
-# plotly.tools.set_credentials_file(username='mtfaye', api_key='N9PkbhoY5zxhbU3LKqtb'
 
 # API ACCESS
 

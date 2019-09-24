@@ -28,8 +28,6 @@ Analytical music application, built using the analytic web app framework, Dash a
 
 - Run on a local server
 
- 
-## Credits
-A big shoutout to all the open source codes like Dash and Spotipy that made this app easier for me to develop.
+
 
 ## Enjoy!

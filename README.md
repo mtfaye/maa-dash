@@ -31,3 +31,5 @@ Analytical music application, built using the analytic web app framework, Dash a
 
 
 ## Enjoy!
+
+@author: Mouhameth Takha Faye

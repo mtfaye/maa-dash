@@ -8,7 +8,7 @@ Analytical music application, built using the analytic web app framework, Dash a
 
 - requirement.txt: Contains all the dependencies. 
 - assets: contains all the statics images and CSS Boostrap codes.
-- spotify.data.db: sqlite database, no need to use this file. You can create the file in your directory by simply running the app.py
+- spotify.data.db: SQLite database, no need to use this file. You can create the file in your directory by simply running the app.py
 
 
 

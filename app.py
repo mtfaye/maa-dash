@@ -39,7 +39,7 @@ spotifyObject = spotipy.Spotify(auth=token)
 
 app = dash.Dash(__name__)
 app.config['suppress_callback_exceptions'] = True
-app.title = 'hit-dash'
+app.title = 'bump'
 app.colors = {'background': '#5F5958'}
 
 
@@ -52,7 +52,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.H1(children='hit-dash',
+                        html.H1(children='bump',
                                 style={'color': 'white', 'fontSize':23, 'text-indent':10,'line-height': 50},
                                 className='banner'
                                 ),
@@ -93,7 +93,7 @@ app.layout = html.Div(
                         dcc.Graph(
                             id='feat-graph'
                         )
-                    ],className='nine columns'
+                    ],className='twelve columns'
                 ),
 
                 html.Div(
@@ -133,7 +133,7 @@ app.layout = html.Div(
 
 def update_div(input_data):
     # Get list of tracks for a given artist
-    results = spotifyObject.search(input_data,limit=30)
+    results = spotifyObject.search(input_data,limit=40)
     # print(json.dumps(results, indent=4))
 
     # Get the list of tracks name
@@ -213,7 +213,7 @@ def update_div(input_data):
 
                       )
 
-                  ], className='four columns'),
+                  ], className='three columns'),
 
                       html.Div([html.P(html.H5(u"{}".format(input_data),
                                                style={'fontSize': 20, 'font-weight':'bold', 'text-indent':10,
@@ -230,7 +230,8 @@ def update_div(input_data):
                                   min=0,
                                   size=200
                               )
-                          ], className='nine columns'),
+                          ], className='four columns'),
+
                           html.Div([
                               daq.Gauge(
                                   id='danceability',
@@ -240,11 +241,11 @@ def update_div(input_data):
                                   value=mean(list(df.danceability)),
                                   max=1,
                                   min=0,
-                                  size=100
+                                  size=200
                               )
-                          ], className='three columns')
+                          ], className='five columns')
 
-                      ],className='six columns')
+                      ],className='nine columns')
 
           ],className='twelve columns')
 
@@ -255,29 +256,42 @@ def update_div(input_data):
 
 def update_graph(selector):
 
-    options_data={
-        'Acousticness': df.acousticness,
-        'Liveness': df.liveness,
-        'Energy': df.energy,
-        'Valence':df.valence,
+   options_data = {
+       'Acousticness':go.Scatter(y=df.acousticness,
+                                 mode='lines+markers',
+                                 name='Acousticness'
+                                 ),
 
-    }
+       'Liveness':go.Scatter(y=df.liveness,
+                             mode='lines+markers',
+                             name='Liveness'
+                             ),
 
-    data=[]
-    for i in selector:
-        data.append({
-            'y': options_data[i], 'type': 'Scatter', 'mode': 'lines+markers'
-            })
+        'Energy':go.Scatter(y=df.energy,
+                            mode='lines+markers',
+                            name='Energy'
+                            ),
 
-    figure= {
+       'Valence': go.Scatter(y=df.valence,
+                             mode='lines+markers',
+                             name='Energy')
+             }
+
+
+   data = []
+   for i in selector:
+       data.append(
+           options_data[i]
+       )
+
+   figure={
             'data': data,
-            'layout':
-                {
-                    'title':'Tracks Features'
+            'layout':{
+                 'title': 'Track features'
+             }
 
-                }
         }
-    return figure
+   return figure
 
 
 

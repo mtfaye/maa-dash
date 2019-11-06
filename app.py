@@ -3,20 +3,21 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import sys
 import json
+import sqlite3
+import pandas as pd
 import spotipy
 import spotipy.util as util
-from json.decoder import JSONDecodeError
-import pandas as pd
-import sqlite3
 from statistics import mean
+from json.decoder import JSONDecodeError
 
 import dash
 import dash_table
+import dash_daq as daq
+import plotly.graph_objs as go
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import dash_daq as daq
-import plotly.graph_objs as go
+
 
 
 # API ACCESS
@@ -82,7 +83,8 @@ app.layout = html.Div(
                         options=[{'label': 'Acousticness', 'value': 'Acousticness'},
                                  {'label': 'Liveness', 'value': 'Liveness'},
                                  {'label': 'Energy', 'value': 'Energy'},
-                                 {'label': 'Valence', 'value': 'Valence'}
+                                 {'label': 'Valence', 'value': 'Valence'},
+                                 {'label': 'Danceability', 'value': 'Danceability'}
                                  ],
                         value='All',
                         multi=True,
@@ -209,13 +211,14 @@ def update_div(input_data):
                                   )
                                   for i in range(len(df.name))
                               ]
-                          ), style={"height": "350px", "width": "100", 'float': 'right', "overflowY": "scroll"}
+                          ), style={"height": "350px", "width": "100", 'float': 'left', "overflowY": "scroll"}
 
                       )
 
                   ], className='three columns'),
 
-                      html.Div([html.P(html.H5(u"{}".format(input_data),
+                      html.Div([
+                          html.P(html.H5(u"{}".format(input_data),
                                                style={'fontSize': 20, 'font-weight':'bold', 'text-indent':10,
                                                       'text-align':'center'}
             )),
@@ -228,22 +231,9 @@ def update_div(input_data):
                                   value=mean(list(df.popularity)),
                                   max=100,
                                   min=0,
-                                  size=200
+                                  size=300
                               )
-                          ], className='four columns'),
-
-                          html.Div([
-                              daq.Gauge(
-                                  id='danceability',
-                                  label='Danceability',
-                                  color={"gradient": True,
-                                         "ranges": {"lightblue": [0, 0.6], "blue": [0.6, 0.8], "darkblue": [0.8, 1]}},
-                                  value=mean(list(df.danceability)),
-                                  max=1,
-                                  min=0,
-                                  size=200
-                              )
-                          ], className='five columns')
+                          ], className='six columns')
 
                       ],className='nine columns')
 
@@ -257,28 +247,33 @@ def update_div(input_data):
 def update_graph(selector):
 
    options_data = {
-       'Acousticness':go.Scatter(y=df.acousticness,
-                                 mode='lines+markers',
+
+       'Acousticness': go.Scatter(x=df.acousticness,
+                                  y=df.popularity,
+                                 mode='markers',
                                  name='Acousticness'
                                  ),
 
-       'Liveness':go.Scatter(y=df.liveness,
-                             mode='lines+markers',
+       'Liveness': go.Scatter(x=df.liveness,
+                              y=df.popularity,
+                             mode='markers',
                              name='Liveness'
                              ),
 
-        'Energy':go.Scatter(y=df.energy,
-                            mode='lines+markers',
+        'Energy': go.Scatter(x=df.energy,
+                             y=df.popularity,
+                            mode='markers',
                             name='Energy'
                             ),
 
-       'Valence': go.Scatter(y=df.valence,
-                             mode='lines+markers',
-                             name='Energy')
+       'Valence': go.Scatter(x=df.valence,
+                             y=df.popularity,
+                             mode='markers',
+                             name='Valence')
              }
 
+   data=[]
 
-   data = []
    for i in selector:
        data.append(
            options_data[i]
@@ -292,8 +287,6 @@ def update_graph(selector):
 
         }
    return figure
-
-
 
 
 if __name__ == '__main__':

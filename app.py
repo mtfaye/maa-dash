@@ -11,7 +11,7 @@ import spotipy.util as util
 from statistics import mean
 from json.decoder import JSONDecodeError
 
-import dashpython--
+import dashpython
 import dash_table
 import dash_daq as daq
 import plotly.graph_objs as go

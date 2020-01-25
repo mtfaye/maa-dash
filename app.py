@@ -1,5 +1,6 @@
 from __future__ import print_function    # (at top of module)
-from spotipy.oauth2 import SpotifyClientCredentials
+#from spotipy.oauth2 import SpotifyClientCredentials
+
 import os
 import sys
 import json
@@ -10,7 +11,7 @@ import spotipy.util as util
 from statistics import mean
 from json.decoder import JSONDecodeError
 
-import dash
+import dashpython--
 import dash_table
 import dash_daq as daq
 import plotly.graph_objs as go
@@ -272,9 +273,9 @@ def update_graph(selector):
                              name='Valence')
              }
 
-   data=[]
+  #  data=[]
 
-   for i in selector:
+   # for i in selector:
        data.append(
            options_data[i]
        )
@@ -291,6 +292,3 @@ def update_graph(selector):
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8050)
-
-
-

@@ -19,11 +19,13 @@ Analytical music application, built using the analytic web app framework, Dash a
 - Sign up on Spotify for free if you do not have an account already and go to https://developer.spotify.com/dashboard/login, fill in the form and get your spotify app credentials.
 
 - Use the wrapper Spotipy to set up your terminal variables:
-            ```export SPOTIPY_CLIENT_ID='your-spotify-client-id'```
-            ```export SPOTIPY_CLIENT_SECRET='your-spotify-client-secret'```
-            ```export SPOTIPY_REDIRECT_URI='your-app-redirect-url'```
+                         ```export SPOTIPY_CLIENT_ID='your-spotify-client-id'```
+                        ```export SPOTIPY_CLIENT_SECRET='your-spotify-client-secret'```
+                         ```export SPOTIPY_REDIRECT_URI='your-app-redirect-url'```
+                         
+                         
 -Get your credentials at    
-               ``` https://developer.spotify.com/my-applications```
+                         ``` https://developer.spotify.com/my-applications```
 
 - Run on a local server
 
